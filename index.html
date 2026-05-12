@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>무료 쇼핑몰 숏폼 진단 받아보기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #FF7042;
+    --orange-deep: #E85A2A;
+    --orange-soft: #FFE5D9;
+    --orange-pale: #FFF4ED;
+    --ink: #1A1A1A;
+    --ink-soft: #4A4A4A;
+    --ink-mute: #8A8A8A;
+    --line: #ECECEC;
+    --bg: #FFFBF7;
+    --white: #FFFFFF;
+    --shadow-sm: 0 2px 8px rgba(255, 112, 66, 0.08);
+    --shadow-md: 0 8px 24px rgba(255, 112, 66, 0.12);
+    --shadow-lg: 0 16px 40px rgba(255, 112, 66, 0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  body { min-height: 100vh; overflow-x: hidden; }
+
+  /* App container - 모바일 우선 */
+  .app {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ============ 인트로 화면 ============ */
+  .intro {
+    padding: 60px 24px 40px;
+    text-align: center;
+    background: linear-gradient(180deg, #FFF4ED 0%, #FFFBF7 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .intro-top { animation: fadeUp 0.7s ease-out; }
+  .intro-badge {
+    display: inline-block;
+    background: var(--white);
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1.5px solid var(--orange);
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+  .intro-title {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.04em;
+    margin-bottom: 16px;
+  }
+  .intro-title .accent {
+    color: var(--orange);
+    font-family: 'Gaegu', 'Pretendard', sans-serif;
+    font-weight: 700;
+    display: inline-block;
+    transform: rotate(-2deg);
+  }
+  .intro-desc {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    letter-spacing: -0.02em;
+  }
+
+  /* 일러스트 영역 */
+  .intro-visual {
+    margin: 16px auto 32px;
+    width: 220px;
+    height: 220px;
+    position: relative;
+  }
+  .phone-mock {
+    width: 140px;
+    height: 200px;
+    background: var(--white);
+    border-radius: 22px;
+    border: 3px solid var(--ink);
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-6deg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    animation: float 3s ease-in-out infinite;
+  }
+  .phone-mock::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: var(--ink);
+    border-radius: 4px;
+  }
+  .phone-screen {
+    position: absolute;
+    top: 22px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    background: linear-gradient(135deg, #FF7042, #FFA77F);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+  }
+  .sticker {
+    position: absolute;
+    background: var(--white);
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 12px;
+    box-shadow: 2px 2px 0 var(--ink);
+    animation: wiggle 2s ease-in-out infinite;
+  }
+  .sticker-1 { top: 0; right: 10px; background: #FFE45C; transform: rotate(8deg); animation-delay: 0.3s; }
+  .sticker-2 { bottom: 20px; left: 0; background: #B5F1A8; transform: rotate(-10deg); animation-delay: 0.7s; }
+  .sticker-3 { top: 60%; right: 0; background: var(--orange); color: var(--white); transform: rotate(12deg); animation-delay: 1s; }
+
+  @keyframes float { 0%,100% { transform: translateX(-50%) rotate(-6deg) translateY(0); } 50% { transform: translateX(-50%) rotate(-6deg) translateY(-8px); } }
+  @keyframes wiggle { 0%,100% { transform: rotate(var(--r, 8deg)) translateY(0); } 50% { transform: rotate(var(--r, 8deg)) translateY(-4px); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse-orange { 0%,100% { box-shadow: 0 8px 20px rgba(255, 112, 66, 0.35); } 50% { box-shadow: 0 12px 28px rgba(255, 112, 66, 0.55); } }
+
+  .meta-row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    font-size: 12px;
+    color: var(--ink-mute);
+    font-weight: 500;
+  }
+  .meta-row span { display: flex; align-items: center; gap: 4px; }
+
+  .btn-primary {
+    display: block;
+    width: 100%;
+    background: var(--orange);
+    color: var(--white);
+    font-size: 17px;
+    font-weight: 700;
+    padding: 18px;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    letter-spacing: -0.02em;
+    animation: pulse-orange 2s ease-in-out infinite;
+    transition: transform 0.15s ease;
+  }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary .arrow { display: inline-block; margin-left: 6px; transition: transform 0.3s ease; }
+  .btn-primary:hover .arrow { transform: translateX(4px); }
+
+  .perk {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--ink-mute);
+    font-weight: 500;
+  }
+  .perk b { color: var(--orange); font-weight: 700; }
+
+  /* ============ 설문 화면 ============ */
+  .survey { display: none; padding: 24px 24px 120px; min-height: 100vh; }
+  .survey.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .progress {
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    padding: 12px 0 16px;
+    z-index: 10;
+    margin: -24px -24px 16px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .progress-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-mute);
+    letter-spacing: -0.02em;
+  }
+  .progress-step {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--orange);
+  }
+  .progress-bar {
+    height: 6px;
+    background: var(--line);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--orange);
+    width: 12.5%;
+    border-radius: 999px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .question-num {
+    display: inline-block;
+    font-family: 'Gaegu', sans-serif;
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--orange);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .question-title {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.35;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+  }
+  .question-sub {
+    font-size: 13px;
+    color: var(--ink-mute);
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    background: var(--white);
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-align: left;
+    font-family: inherit;
+    width: 100%;
+  }
+  .option:active { transform: scale(0.98); }
+  .option.selected {
+    border-color: var(--orange);
+    background: var(--orange-pale);
+    box-shadow: var(--shadow-sm);
+  }
+  .option-radio {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid var(--line);
+    flex-shrink: 0;
+    margin-top: 2px;
+    position: relative;
+    transition: all 0.2s ease;
+  }
+  .option.selected .option-radio {
+    border-color: var(--orange);
+    background: var(--orange);
+  }
+  .option.selected .option-radio::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: var(--white);
+    border-radius: 50%;
+  }
+  .option-content { flex: 1; }
+  .option-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.4;
+  }
+  .option-desc {
+    font-size: 13px;
+    color: var(--ink-mute);
+    margin-top: 4px;
+    letter-spacing: -0.02em;
+    line-height: 1.45;
+  }
+
+  /* 입력 필드 */
+  .input-group { margin-bottom: 16px; }
+  .input-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+    display: block;
+    letter-spacing: -0.02em;
+  }
+  .input-help {
+    font-size: 12px;
+    color: var(--ink-mute);
+    margin-top: 6px;
+    letter-spacing: -0.02em;
+  }
+  .input-help b { color: var(--orange); font-weight: 700; }
+  .text-input {
+    width: 100%;
+    background: var(--white);
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--ink);
+    transition: border-color 0.2s ease;
+    letter-spacing: -0.02em;
+  }
+  .text-input:focus {
+    outline: none;
+    border-color: var(--orange);
+  }
+  .text-input::placeholder { color: var(--ink-mute); font-weight: 400; }
+
+  /* 하단 고정 버튼 */
+  .footer-cta {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    padding: 16px 24px 24px;
+    background: linear-gradient(180deg, rgba(255, 251, 247, 0) 0%, var(--bg) 30%);
+    z-index: 50;
+  }
+  .btn-next {
+    width: 100%;
+    background: var(--orange);
+    color: var(--white);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: -0.02em;
+  }
+  .btn-next:disabled {
+    background: var(--line);
+    color: var(--ink-mute);
+    cursor: not-allowed;
+  }
+  .btn-next:not(:disabled):active { transform: scale(0.98); }
+
+  /* ============ 결과 화면 ============ */
+  .result { display: none; padding: 0 0 60px; min-height: 100vh; }
+  .result.active { display: block; animation: fadeIn 0.4s ease; }
+
+  .result-hero {
+    background: linear-gradient(135deg, #FF7042 0%, #FF9466 100%);
+    padding: 48px 24px 80px;
+    text-align: center;
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .result-hero::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -30px;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+  }
+  .result-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    left: -30px;
+    width: 140px;
+    height: 140px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+  }
+  .result-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+    position: relative;
+    z-index: 1;
+  }
+  .result-icon {
+    font-size: 64px;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    animation: bounce 2s ease-in-out infinite;
+  }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  .result-title {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.03em;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .result-subtitle {
+    font-size: 14px;
+    opacity: 0.95;
+    line-height: 1.5;
+    letter-spacing: -0.02em;
+    position: relative;
+    z-index: 1;
+  }
+
+  .result-body {
+    padding: 0 24px;
+    margin-top: -40px;
+    position: relative;
+    z-index: 2;
+  }
+  .strategy-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 16px;
+  }
+  .strategy-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--orange);
+    margin-bottom: 6px;
+    letter-spacing: 0.02em;
+  }
+  .strategy-headline {
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.35;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+
+  .strategy-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .strategy-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .strategy-item:first-child { padding-top: 0; }
+  .strategy-num {
+    display: inline-block;
+    background: var(--orange-pale);
+    color: var(--orange);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+  .strategy-item-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+  }
+  .strategy-item-desc {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    letter-spacing: -0.02em;
+  }
+
+  .cta-card {
+    background: var(--ink);
+    color: var(--white);
+    border-radius: 20px;
+    padding: 28px 24px;
+    text-align: center;
+    margin-top: 16px;
+  }
+  .cta-card-title {
+    font-size: 19px;
+    font-weight: 800;
+    line-height: 1.35;
+    margin-bottom: 8px;
+    letter-spacing: -0.03em;
+  }
+  .cta-card-title b { color: var(--orange); }
+  .cta-card-desc {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 20px;
+    line-height: 1.5;
+    letter-spacing: -0.02em;
+  }
+  .btn-cta {
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    letter-spacing: -0.02em;
+    transition: transform 0.15s ease;
+    font-family: inherit;
+  }
+  .btn-cta:active { transform: scale(0.98); }
+
+  .restart {
+    text-align: center;
+    margin-top: 24px;
+  }
+  .restart-link {
+    color: var(--ink-mute);
+    font-size: 13px;
+    text-decoration: underline;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: inherit;
+  }
+
+  /* hide */
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ============ 1. 인트로 ============ -->
+  <section class="intro" id="intro">
+    <div class="intro-top">
+      <span class="intro-badge">🎁 행사 한정 무료 진단</span>
+      <h1 class="intro-title">
+        우리 쇼핑몰<br>
+        숏폼, <span class="accent">제대로</span> 쓰고 있나요?
+      </h1>
+      <p class="intro-desc">
+        1분 진단으로 우리 쇼핑몰에 딱 맞는<br>
+        숏폼 운영 전략을 확인해보세요.
+      </p>
+
+      <div class="intro-visual">
+        <div class="phone-mock">
+          <div class="phone-screen">🎬</div>
+        </div>
+        <div class="sticker sticker-1">+1 month</div>
+        <div class="sticker sticker-2">FREE 🎉</div>
+        <div class="sticker sticker-3">진단 START</div>
+      </div>
+
+      <div class="meta-row">
+        <span>⏱ 약 1분</span>
+        <span>📝 7문항</span>
+        <span>🎁 즉시 결과</span>
+      </div>
+    </div>
+
+    <div>
+      <button class="btn-primary" onclick="startSurvey()">
+        무료 진단 시작하기 <span class="arrow">→</span>
+      </button>
+      <p class="perk">참여 시 <b>찰나 1+1개월</b> 혜택 제공</p>
+    </div>
+  </section>
+
+  <!-- ============ 2. 설문 ============ -->
+  <section class="survey" id="survey">
+    <div class="progress">
+      <div class="progress-top">
+        <span class="progress-label">쇼핑몰 숏폼 진단</span>
+        <span class="progress-step"><span id="step-num">1</span> / 7</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Q1 - 이름 -->
+    <div class="question active" data-step="1">
+      <div class="question-num">Q1</div>
+      <h2 class="question-title">성함을 알려주세요</h2>
+      <p class="question-sub">결과 페이지에서 호칭으로 사용돼요.</p>
+      <div class="input-group">
+        <label class="input-label" for="name-input">성함</label>
+        <input type="text" id="name-input" class="text-input" placeholder="홍길동" autocomplete="name">
+      </div>
+    </div>
+
+    <!-- Q2 - 브랜드 -->
+    <div class="question hidden" data-step="2">
+      <div class="question-num">Q2</div>
+      <h2 class="question-title">기업 / 브랜드명을 알려주세요</h2>
+      <p class="question-sub">맞춤 전략 추천에 참고해요.</p>
+      <div class="input-group">
+        <label class="input-label" for="brand-input">기업 / 브랜드명</label>
+        <input type="text" id="brand-input" class="text-input" placeholder="찰나" autocomplete="organization">
+      </div>
+    </div>
+
+    <!-- Q3 - 이메일 -->
+    <div class="question hidden" data-step="3">
+      <div class="question-num">Q3</div>
+      <h2 class="question-title">혜택받을 이메일을 알려주세요</h2>
+      <p class="question-sub">진단 결과와 혜택 코드를 보내드려요.</p>
+      <div class="input-group">
+        <label class="input-label" for="email-input">이메일</label>
+        <input type="email" id="email-input" class="text-input" placeholder="hello@example.com" autocomplete="email">
+        <p class="input-help">입력하신 이메일로 신규 가입 시 <b>총 2개월 무료</b> 이용 가능합니다.</p>
+      </div>
+    </div>
+
+    <!-- Q4 - 영상 사용 현황 -->
+    <div class="question hidden" data-step="4">
+      <div class="question-num">Q4</div>
+      <h2 class="question-title">현재 우리 쇼핑몰에서 영상은 어떻게 쓰이고 있나요?</h2>
+      <p class="question-sub">지금 상태와 가장 가까운 항목을 골라주세요.</p>
+      <div class="options" data-name="usage">
+        <button class="option" data-value="정적 이미지"><span class="option-radio"></span><div class="option-content"><div class="option-label">아직은 정적인 이미지 중심이에요</div></div></button>
+        <button class="option" data-value="GIF"><span class="option-radio"></span><div class="option-content"><div class="option-label">GIF 이미지로 대체하고 있어요</div></div></button>
+        <button class="option" data-value="외부 링크"><span class="option-radio"></span><div class="option-content"><div class="option-label">유튜브, 비메오 링크를 걸어놨어요</div></div></button>
+        <button class="option" data-value="타사 솔루션"><span class="option-radio"></span><div class="option-content"><div class="option-label">타사 숏폼 솔루션을 쓰고 있어요</div></div></button>
+      </div>
+    </div>
+
+    <!-- Q5 - 영상 제작 방식 -->
+    <div class="question hidden" data-step="5">
+      <div class="question-num">Q5</div>
+      <h2 class="question-title">영상 제작은 주로 어떻게 하시나요?</h2>
+      <p class="question-sub">평소 영상 제작 방식을 골라주세요.</p>
+      <div class="options" data-name="production">
+        <button class="option" data-value="사내 전문팀"><span class="option-radio"></span><div class="option-content"><div class="option-label">사내에 전문 촬영팀 / 크리에이터가 있어요</div></div></button>
+        <button class="option" data-value="스마트폰 자체제작"><span class="option-radio"></span><div class="option-content"><div class="option-label">스마트폰으로 가볍게 찍어서 편집해요</div></div></button>
+        <button class="option" data-value="외주"><span class="option-radio"></span><div class="option-content"><div class="option-label">외부 대행사에 촬영부터 편집까지 맡겨요</div></div></button>
+        <button class="option" data-value="AI 툴"><span class="option-radio"></span><div class="option-content"><div class="option-label">AI 영상 제작 툴을 활용해요</div></div></button>
+        <button class="option" data-value="콘텐츠 없음"><span class="option-radio"></span><div class="option-content"><div class="option-label">영상 콘텐츠가 없어요</div></div></button>
+      </div>
+    </div>
+
+    <!-- Q6 (결과 분기) - 개선하고 싶은 과제 -->
+    <div class="question hidden" data-step="6">
+      <div class="question-num">Q6</div>
+      <h2 class="question-title">지금 가장 개선하고 싶은 우리 쇼핑몰의 과제는?</h2>
+      <p class="question-sub">선택한 과제에 맞춰 맞춤 전략을 알려드려요.</p>
+      <div class="options" data-name="goal">
+        <button class="option" data-value="conversion">
+          <span class="option-radio"></span>
+          <div class="option-content">
+            <div class="option-label">구매 전환</div>
+            <div class="option-desc">구경만 말고 '결제'까지 이어지길 원해요</div>
+          </div>
+        </button>
+        <button class="option" data-value="detail">
+          <span class="option-radio"></span>
+          <div class="option-content">
+            <div class="option-label">디테일 전달</div>
+            <div class="option-desc">실물 느낌을 생생하게 보여주고 싶어요</div>
+          </div>
+        </button>
+        <button class="option" data-value="branding">
+          <span class="option-radio"></span>
+          <div class="option-content">
+            <div class="option-label">브랜딩 강화</div>
+            <div class="option-desc">우리 브랜드만의 분위기를 알리고 싶어요</div>
+          </div>
+        </button>
+        <button class="option" data-value="promotion">
+          <span class="option-radio"></span>
+          <div class="option-content">
+            <div class="option-label">홍보 / 이벤트</div>
+            <div class="option-desc">신상과 기획전을 널리 알리고 싶어요</div>
+          </div>
+        </button>
+        <button class="option" data-value="review">
+          <span class="option-radio"></span>
+          <div class="option-content">
+            <div class="option-label">리뷰 활용</div>
+            <div class="option-desc">고객의 후기를 강조해 신뢰를 얻고 싶어요</div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Q7 - 영상 활용의 장벽 -->
+    <div class="question hidden" data-step="7">
+      <div class="question-num">Q7</div>
+      <h2 class="question-title">쇼핑몰 내 적극적인 영상 활용이 어렵다면, 그 이유는?</h2>
+      <p class="question-sub">가장 큰 장벽을 골라주세요.</p>
+      <div class="options" data-name="barrier">
+        <button class="option" data-value="비용"><span class="option-radio"></span><div class="option-content"><div class="option-label">툴 도입 비용이 부담돼요</div></div></button>
+        <button class="option" data-value="효과 의문"><span class="option-radio"></span><div class="option-content"><div class="option-label">영상 효과를 크게 모르겠어요</div></div></button>
+        <button class="option" data-value="페이지 무거움"><span class="option-radio"></span><div class="option-content"><div class="option-label">고화질 영상으로 페이지가 무거워질 것 같아요</div></div></button>
+        <button class="option" data-value="개발 지식 부족"><span class="option-radio"></span><div class="option-content"><div class="option-label">개발 지식이 없어서 직접 하기 막막해요</div></div></button>
+        <button class="option" data-value="콘텐츠 없음"><span class="option-radio"></span><div class="option-content"><div class="option-label">아직 제작된 영상 콘텐츠가 없어요</div></div></button>
+      </div>
+    </div>
+
+    <div class="footer-cta">
+      <button class="btn-next" id="btn-next" onclick="nextStep()" disabled>다음</button>
+    </div>
+  </section>
+
+  <!-- ============ 3. 결과 ============ -->
+  <section class="result" id="result">
+    <div class="result-hero">
+      <span class="result-badge">YOUR RESULT</span>
+      <div class="result-icon" id="result-icon">🎯</div>
+      <h2 class="result-title" id="result-title">결과 타이틀</h2>
+      <p class="result-subtitle" id="result-subtitle">결과 서브타이틀</p>
+    </div>
+
+    <div class="result-body">
+      <div class="strategy-card">
+        <div class="strategy-title" id="strategy-tag">STRATEGY</div>
+        <h3 class="strategy-headline" id="strategy-headline">전략 헤드라인</h3>
+        <div id="strategy-items"></div>
+      </div>
+
+      <div class="cta-card">
+        <h3 class="cta-card-title">우리 쇼핑몰에 <b>지금 바로</b><br>숏폼을 입혀볼까요?</h3>
+        <p class="cta-card-desc">찰나로 시작하면 첫 가입 시 1+1개월 무료.<br>코드는 입력하신 이메일로 보내드려요.</p>
+        <button class="btn-cta" onclick="goToService()">찰나 둘러보기 →</button>
+      </div>
+
+      <div class="restart">
+        <button class="restart-link" onclick="restart()">처음부터 다시 진단하기</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // ===== 설정 =====
+  // Google Apps Script Web App URL
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1bbKRUGb2-GH8LrY0IA4WZgB_4juwhycf_43pzzjZjsmaxdhJPeZ8x1iEbWkhYj78/exec';
+
+  // 상태 관리
+  const state = {
+    step: 1,
+    totalSteps: 7,
+    answers: {
+      usage: null,
+      production: null,
+      goal: null,
+      barrier: null,
+      name: '',
+      brand: '',
+      email: ''
+    }
+  };
+
+  // 결과 콘텐츠
+  const RESULTS = {
+    conversion: {
+      icon: '🛒',
+      title: '"결제까지 이어지는"\n구매 전환형 숏폼 전략',
+      subtitle: '머무는 시간을 매출로 바꾸는 영상 설계가 필요해요',
+      tag: '구매 전환 STRATEGY',
+      headline: '훑어보던 고객을\n"장바구니"로 끌고 오는 4가지 공식',
+      items: [
+        { title: '상품 페이지 상단에 15초 후킹 영상', desc: '제품의 핵심 가치를 첫 3초 안에 보여주세요. 스크롤 이탈을 막는 가장 효과적인 위치입니다.' },
+        { title: '영상 안에 CTA 버튼 직접 노출', desc: '"지금 구매하기"를 영상 위에 띄워 보세요. 시선이 머문 그 자리에서 결제가 일어납니다.' },
+        { title: '베네핏 자막 X 시연 컷 조합', desc: '"방수돼요" 한 줄보다, 물을 붓는 영상 한 컷이 강해요. 자막과 시연을 한 화면에 담으세요.' },
+        { title: '이탈 구간 분석으로 영상 길이 최적화', desc: '대시보드에서 시청자가 떠나는 지점을 확인하고, 그 앞에 핵심 메시지를 재배치하세요.' }
+      ]
+    },
+    detail: {
+      icon: '🔍',
+      title: '"실물보다 더 생생한"\n디테일 전달형 숏폼 전략',
+      subtitle: '"사진만 봐선 모르겠어요" 고민을 해결해드려요',
+      tag: '디테일 전달 STRATEGY',
+      headline: '"이미지로는 안 보이던 것"을\n보여주는 4가지 디테일 공식',
+      items: [
+        { title: '360도 회전 + 클로즈업 분할 컷', desc: '전체 실루엣과 디테일 부분을 한 영상에 담으세요. 한 번 재생으로 궁금증을 다 해소시키는 게 핵심.' },
+        { title: '소재·움직임을 보여주는 마이크로 컷', desc: '원단의 흔들림, 가죽의 결, 액체의 점도 — 정적 이미지로 절대 못 담는 질감을 강조하세요.' },
+        { title: '비교 컷으로 사이즈·스케일 직관화', desc: '손, A4 용지, 일상 물건과 함께 보여주세요. "이 정도구나"가 즉시 와닿아야 반품이 줄어듭니다.' },
+        { title: '상세페이지 곳곳에 짧은 영상 분산 배치', desc: '한 곳에 몰지 말고 스펙별로 쪼개세요. 스크롤하다 자연스럽게 디테일을 만나야 합니다.' }
+      ]
+    },
+    branding: {
+      icon: '✨',
+      title: '"한 컷만 봐도 우리 거"\n브랜딩 강화형 숏폼 전략',
+      subtitle: '제품이 아닌 "분위기"로 기억되는 영상이 필요해요',
+      tag: '브랜딩 강화 STRATEGY',
+      headline: '"이거 어디 브랜드지?"\n묻게 만드는 4가지 무드 공식',
+      items: [
+        { title: '일관된 컬러 톤·자막 폰트로 시그니처 무드', desc: '모든 영상에 같은 컬러 그레이딩과 폰트를 쓰세요. 3편만 봐도 "우리 브랜드" 감각이 생깁니다.' },
+        { title: '메인 비주얼은 영상 루프로 교체', desc: '메인 배너 영상이 곧 브랜드 인상입니다. 정적 이미지 대신 5~7초 시네마틱 루프를 걸어보세요.' },
+        { title: '제품 설명보다 "쓰는 장면" 위주로', desc: '스펙 자막을 줄이고 라이프스타일 컷을 늘리세요. 사용 맥락이 곧 브랜드 정체성이 됩니다.' },
+        { title: '브랜드 스토리 영상을 About 페이지에', desc: '30초짜리 브랜드 메시지 영상 하나만 있어도 신규 방문자의 기억에 오래 남습니다.' }
+      ]
+    },
+    promotion: {
+      icon: '📢',
+      title: '"한 번 봐도 못 잊을"\n홍보·이벤트형 숏폼 전략',
+      subtitle: '신상과 기획전을 빠르게, 임팩트 있게 알려요',
+      tag: '홍보·이벤트 STRATEGY',
+      headline: '쏟아지는 신상과 기획전을\n"제대로 띄우는" 4가지 공식',
+      items: [
+        { title: '메인 배너 영상으로 즉각 어텐션 확보', desc: '진입 첫 화면에 이벤트 영상을 풀스크린으로 배치하세요. 클릭 전부터 임팩트를 만들 수 있어요.' },
+        { title: '신상은 "한 화면에 전 라인업" 컷', desc: '여러 상품을 빠르게 스위칭하는 시퀀스로 신상 전체를 3초에 인지시키세요.' },
+        { title: '카운트다운·기간 자막으로 긴박감', desc: '"D-3", "오늘 자정 종료" 등 시간 자막을 영상에 직접 넣으세요. 행동 유발률이 달라집니다.' },
+        { title: '이벤트 종료 후 영상만 빠르게 교체', desc: '솔루션 도입 시 페이지 수정 없이 영상만 갈아끼울 수 있어요. 기획전 회전이 빨라집니다.' }
+      ]
+    },
+    review: {
+      icon: '💬',
+      title: '"한 명의 후기가 백 명을 부르는"\n리뷰 활용형 숏폼 전략',
+      subtitle: '쌓여있는 후기, 영상으로 다시 살려보세요',
+      tag: '리뷰 활용 STRATEGY',
+      headline: '리뷰를 "신뢰의 무기"로 바꾸는\n4가지 콘텐츠 공식',
+      items: [
+        { title: '베스트 리뷰 자막을 영상 위에 직접 노출', desc: '평점 5점 후기를 자막 카드 형태로 영상에 얹어보세요. "리뷰 탭 안 봐도 보이는" 신뢰가 핵심.' },
+        { title: '실착·실사용 UGC 영상 큐레이션', desc: '고객이 올린 짧은 영상을 모아 상세페이지에 노출하세요. 광고보다 강력한 설득력이 생깁니다.' },
+        { title: '리뷰 영상은 상세페이지 중간 지점에', desc: '구매 결정이 흔들리는 중반부에 배치해야 효과가 납니다. 상단 후킹과 하단 CTA 사이가 정답.' },
+        { title: '"별점 + 리뷰 수" 오버레이로 사회적 증거', desc: '영상 하단에 "★4.9 / 후기 1,200+" 자막을 띄우세요. 숫자 하나로 의심이 신뢰로 바뀝니다.' }
+      ]
+    }
+  };
+
+  // 시작
+  function startSurvey() {
+    document.getElementById('intro').style.display = 'none';
+    document.getElementById('survey').classList.add('active');
+    updateProgress();
+    window.scrollTo(0, 0);
+  }
+
+  // 옵션 선택
+  document.querySelectorAll('.options').forEach(group => {
+    group.addEventListener('click', (e) => {
+      const opt = e.target.closest('.option');
+      if (!opt) return;
+      group.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      const name = group.dataset.name;
+      state.answers[name] = opt.dataset.value;
+      document.getElementById('btn-next').disabled = false;
+    });
+  });
+
+  // 입력 필드 검증
+  ['name-input', 'brand-input', 'email-input'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => {
+      const map = { 'name-input': 'name', 'brand-input': 'brand', 'email-input': 'email' };
+      state.answers[map[id]] = el.value.trim();
+      validateCurrentStep();
+    });
+  });
+
+  function validateCurrentStep() {
+    const step = state.step;
+    let valid = false;
+    if (step === 1) {
+      valid = state.answers.name.length > 0;
+    } else if (step === 2) {
+      valid = state.answers.brand.length > 0;
+    } else if (step === 3) {
+      valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.answers.email);
+    } else if (step >= 4 && step <= 7) {
+      const keys = ['usage', 'production', 'goal', 'barrier'];
+      valid = !!state.answers[keys[step - 4]];
+    }
+    document.getElementById('btn-next').disabled = !valid;
+  }
+
+  // 다음 단계
+  function nextStep() {
+    document.querySelector(`.question[data-step="${state.step}"]`).classList.add('hidden');
+    if (state.step < state.totalSteps) {
+      state.step++;
+      document.querySelector(`.question[data-step="${state.step}"]`).classList.remove('hidden');
+      updateProgress();
+      validateCurrentStep();
+      if (state.step === 7) {
+        document.getElementById('btn-next').textContent = '결과 보기 🎉';
+      } else {
+        document.getElementById('btn-next').textContent = '다음';
+      }
+      window.scrollTo(0, 0);
+    } else {
+      showResult();
+    }
+  }
+
+  function updateProgress() {
+    document.getElementById('step-num').textContent = state.step;
+    document.getElementById('progress-fill').style.width = (state.step / state.totalSteps * 100) + '%';
+  }
+
+  // 결과 표시
+  function showResult() {
+    const goal = state.answers.goal;
+    const data = RESULTS[goal];
+    if (!data) return;
+
+    document.getElementById('result-icon').textContent = data.icon;
+    document.getElementById('result-title').innerHTML = data.title.replace(/\n/g, '<br>');
+    document.getElementById('result-subtitle').textContent = data.subtitle;
+    document.getElementById('strategy-tag').textContent = data.tag;
+    document.getElementById('strategy-headline').innerHTML = data.headline.replace(/\n/g, '<br>');
+
+    const itemsHtml = data.items.map((item, i) => `
+      <div class="strategy-item">
+        <span class="strategy-num">0${i + 1}</span>
+        <div class="strategy-item-title">${item.title}</div>
+        <div class="strategy-item-desc">${item.desc}</div>
+      </div>
+    `).join('');
+    document.getElementById('strategy-items').innerHTML = itemsHtml;
+
+    // 호칭 적용 (선택사항)
+    if (state.answers.name) {
+      const subtitle = document.getElementById('result-subtitle');
+      subtitle.textContent = `${state.answers.name}님, ${data.subtitle}`;
+    }
+
+    document.getElementById('survey').classList.remove('active');
+    document.getElementById('result').classList.add('active');
+    window.scrollTo(0, 0);
+
+    // Google Sheets로 응답 전송
+    sendToGoogleSheets(state.answers);
+  }
+
+  // Google Sheets로 데이터 전송
+  function sendToGoogleSheets(answers) {
+    if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+      console.warn('⚠️ Google Apps Script URL이 설정되지 않았습니다.');
+      console.log('진단 결과:', answers);
+      return;
+    }
+
+    // no-cors 모드: 응답을 받을 수 없지만 데이터는 정상 전송됨
+    // (Apps Script는 CORS preflight를 받지 않으므로 이 방식이 가장 안정적)
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(answers)
+    })
+      .then(() => console.log('✅ 응답이 시트로 전송되었습니다.'))
+      .catch(err => console.error('❌ 전송 실패:', err));
+  }
+
+  function goToService() {
+    // TODO: 실제 찰나 서비스 URL로 교체
+    window.open('https://chal-na.com', '_blank');
+  }
+
+  function restart() {
+    state.step = 1;
+    Object.keys(state.answers).forEach(k => state.answers[k] = (typeof state.answers[k] === 'string') ? '' : null);
+    document.querySelectorAll('.option.selected').forEach(o => o.classList.remove('selected'));
+    document.querySelectorAll('.text-input').forEach(i => i.value = '');
+    document.querySelectorAll('.question').forEach((q, i) => {
+      if (i === 0) q.classList.remove('hidden');
+      else q.classList.add('hidden');
+    });
+    document.getElementById('result').classList.remove('active');
+    document.getElementById('survey').classList.remove('active');
+    document.getElementById('intro').style.display = 'flex';
+    document.getElementById('btn-next').textContent = '다음';
+    document.getElementById('btn-next').disabled = true;
+    updateProgress();
+    window.scrollTo(0, 0);
+  }
+</script>
+
+</body>
+</html>
