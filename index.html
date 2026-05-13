@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>무료 쇼핑몰 숏폼 진단 받아보기</title>
+<title>자사몰 숏폼 진단 받아보기</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -390,7 +391,7 @@
 
   .result-hero {
     background: linear-gradient(135deg, #FF7042 0%, #FF9466 100%);
-    padding: 48px 24px 80px;
+    padding: 56px 24px 80px;
     text-align: center;
     color: var(--white);
     position: relative;
@@ -466,7 +467,7 @@
   .strategy-card {
     background: var(--white);
     border-radius: 20px;
-    padding: 24px;
+    padding: 28px 24px 24px;
     box-shadow: var(--shadow-md);
     margin-bottom: 16px;
   }
@@ -515,6 +516,13 @@
     color: var(--ink-soft);
     line-height: 1.6;
     letter-spacing: -0.02em;
+  }
+  .strategy-item-img {
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 12px;
+    display: block;
+    background: #F5F5F5;
   }
 
   .cta-card {
@@ -754,7 +762,6 @@
   <!-- ============ 3. 결과 ============ -->
   <section class="result" id="result">
     <div class="result-hero">
-      <span class="result-badge">YOUR RESULT</span>
       <div class="result-icon" id="result-icon">🎯</div>
       <h2 class="result-title" id="result-title">결과 타이틀</h2>
       <p class="result-subtitle" id="result-subtitle">결과 서브타이틀</p>
@@ -762,7 +769,6 @@
 
     <div class="result-body">
       <div class="strategy-card">
-        <div class="strategy-title" id="strategy-tag">STRATEGY</div>
         <h3 class="strategy-headline" id="strategy-headline">전략 헤드라인</h3>
         <div id="strategy-items"></div>
       </div>
@@ -807,57 +813,52 @@
       icon: '🛒',
       title: '클릭을 구매로 바꾸는\n전환형 숏폼 전략',
       subtitle: '첫 클릭 유도부터 구매 확신까지, 이탈 없는 매끄러운 설득의 흐름이 필요해요',
-      tag: '구매 전환 STRATEGY',
       headline: '훑어보던 고객을\n\'장바구니\'로 끌고 오는 3가지 공식',
       items: [
-        { title: '상품 썸네일에 3-5초 후킹 영상', desc: '짧고 시각적 임팩트가 강한 영상을 썸네일에 넣으세요. 영상 썸네일은 클릭률을 6배까지 높입니다.' },
-        { title: '상세 페이지 곳곳에 짧은 영상을 분산 배치', desc: '궁금증을 해소하는 영상을 곳곳에 배치하세요. 고객이 스크롤을 멈추지 않도록 다양한 정보를 영상으로 전달하세요.' },
-        { title: '영상 속 아이템을 한 화면에 노출', desc: '영상 옆에 상품을 바로 노출하면, 탐색과 구매 결정이 한번에 이루어지기 때문에 고객의 구매 여정을 단축시킵니다.' }
+        { title: '상품 썸네일에 3-5초 후킹 영상', desc: '짧고 시각적 임팩트가 강한 영상을 썸네일에 넣으세요. 영상 썸네일은 클릭률을 6배까지 높입니다.', img: 'images/thumbnail-player.png' },
+        { title: '상세 페이지 곳곳에 짧은 영상을 분산 배치', desc: '궁금증을 해소하는 영상을 곳곳에 배치하세요. 고객이 스크롤을 멈추지 않도록 다양한 정보를 영상으로 전달하세요.', img: 'images/display-detail.png' },
+        { title: '영상 속 아이템을 한 화면에 노출', desc: '영상 옆에 상품을 바로 노출하면, 탐색과 구매 결정이 한번에 이루어지기 때문에 고객의 구매 여정을 단축시킵니다.', img: 'images/multi-shop-player.png' }
       ]
     },
     detail: {
       icon: '🔍',
       title: '실물보다 더 생생한\n디테일 강조형 숏폼 전략',
       subtitle: '고객의 시각적 궁금증을 해소하는 실물 중심의 영상으로 정보의 격차를 줄여야 해요',
-      tag: '디테일 전달 STRATEGY',
       headline: '\'이미지로는 안 보이던 디테일\'을\n보여주는 2가지 공식',
       items: [
-        { title: '소재·움직임을 보여주는 클로즈업 컷', desc: '원단, 소재, 질감, 발색 등 정적인 이미지로는 절대 못 담는 디테일을 영상으로 강조하세요.' },
-        { title: '상품 썸네일에 소구점을 담은 영상', desc: '영상 썸네일은 핵심 디테일을 미리 전달해 상품 정보를 빠르게 이해시켜 줍니다. 생동감 있는 실물을 먼저 보여주세요.' }
+        { title: '소재·움직임을 보여주는 클로즈업 컷', desc: '원단, 소재, 질감, 발색 등 정적인 이미지로는 절대 못 담는 디테일을 영상으로 강조하세요.', img: 'images/display-detail.png' },
+        { title: '상품 썸네일에 소구점을 담은 영상', desc: '영상 썸네일은 핵심 디테일을 미리 전달해 상품 정보를 빠르게 이해시켜 줍니다. 생동감 있는 실물을 먼저 보여주세요.', img: 'images/thumbnail-player.png' }
       ]
     },
     branding: {
       icon: '✨',
       title: '우리 브랜드만의 팬덤을 만드는\n브랜드 몰입 전략',
       subtitle: '브랜드가 지향하는 감성과 정체성을 감각적인 영상미로 전달해야 합니다',
-      tag: '브랜딩 강화 STRATEGY',
       headline: '\'이거 어디 브랜드지?\'\n묻게 만드는 2가지 무드 공식',
       items: [
-        { title: '메인 최상단에 브랜드 무드가 담긴 영상 배치', desc: '메인 배너 영상이 곧 브랜드 인상입니다. 브랜드가 추구하는 라이프스타일과 무드를 강조한 영상을 활용하세요.' },
-        { title: '영상으로 브랜드 무드가 담긴 상품을 강조', desc: '룩북, 제작 공정 등 브랜드 무드가 가득 담긴 영상 속에 핵심 상품이 자연스럽게 어우러지게 구성해 보세요.' }
+        { title: '메인 최상단에 브랜드 무드가 담긴 영상 배치', desc: '메인 배너 영상이 곧 브랜드 인상입니다. 브랜드가 추구하는 라이프스타일과 무드를 강조한 영상을 활용하세요.', img: 'images/display-main-banner.png' },
+        { title: '영상으로 브랜드 무드가 담긴 상품을 강조', desc: '룩북, 제작 공정 등 브랜드 무드가 가득 담긴 영상 속에 핵심 상품이 자연스럽게 어우러지게 구성해 보세요.', img: 'images/multi-shop-player.png' }
       ]
     },
     promotion: {
       icon: '📢',
       title: '더 많이, 더 자주 보여주는\n홍보·이벤트 노출 극대화 전략',
       subtitle: '역동적인 영상으로 신상품과 기획전의 주목도를 끌어올려요',
-      tag: '홍보·이벤트 STRATEGY',
       headline: '쏟아지는 신상과 기획전을\n\'제대로 띄우는\' 3가지 공식',
       items: [
-        { title: '메인 배너 영상으로 즉각 어텐션 확보', desc: '진입 첫 화면에 이벤트 영상을 풀스크린으로 배치하세요. 클릭 전부터 임팩트를 만들 수 있어요.' },
-        { title: '신상, 이벤트 상품은 한 화면에 전 라인업 배치', desc: '여러 상품을 한 눈에 보여주는 배치와 함께 CTA를 노출해 상품 탐색부터 구매까지 연결하세요.' },
-        { title: '프로모션 리마인드용 플로팅 영상', desc: '어떤 페이지에서도 프로모션을 계속 인지하는 플로팅 위젯으로 프로모션 참여율을 극대화 하세요.' }
+        { title: '메인 배너 영상으로 즉각 어텐션 확보', desc: '진입 첫 화면에 이벤트 영상을 풀스크린으로 배치하세요. 클릭 전부터 임팩트를 만들 수 있어요.', img: 'images/display-main-banner.png' },
+        { title: '신상, 이벤트 상품은 한 화면에 전 라인업 배치', desc: '여러 상품을 한 눈에 보여주는 배치와 함께 CTA를 노출해 상품 탐색부터 구매까지 연결하세요.', img: 'images/slide-widget.png' },
+        { title: '프로모션 리마인드용 플로팅 영상', desc: '어떤 페이지에서도 프로모션을 계속 인지하는 플로팅 위젯으로 프로모션 참여율을 극대화 하세요.', img: 'images/floating-widget.png' }
       ]
     },
     review: {
       icon: '💬',
       title: '한 명의 후기가 백 명을 부르는\n리뷰 활용형 숏폼 전략',
       subtitle: '생생한 후기로 고민을 잠재우고 확신을 심어줘야 합니다',
-      tag: '리뷰 활용 STRATEGY',
       headline: '리뷰를 \'신뢰의 무기\'로 바꾸는\n2가지 콘텐츠 공식',
       items: [
-        { title: '고객 리뷰 영상 모아보는 레이아웃 구성', desc: '고객이 올린 짧은 영상을 모아 메인 페이지에 노출하세요. 광고보다 강력한 설득력이 생깁니다.' },
-        { title: '리뷰 영상은 상세페이지 중간 지점에', desc: '정보가 많아지는 지루한 상세페이지 중간 영역에 리뷰 영상을 배치하면 이탈을 방지하고 구매 확신을 줄 수 있어요.' }
+        { title: '고객 리뷰 영상 모아보는 레이아웃 구성', desc: '고객이 올린 짧은 영상을 모아 메인 페이지에 노출하세요. 광고보다 강력한 설득력이 생깁니다.', img: 'images/slide-widget.png' },
+        { title: '리뷰 영상은 상세페이지 중간 지점에', desc: '정보가 많아지는 지루한 상세페이지 중간 영역에 리뷰 영상을 배치하면 이탈을 방지하고 구매 확신을 줄 수 있어요.', img: 'images/display-detail.png' }
       ]
     }
   };
@@ -942,7 +943,6 @@
     document.getElementById('result-icon').textContent = data.icon;
     document.getElementById('result-title').innerHTML = data.title.replace(/\n/g, '<br>');
     document.getElementById('result-subtitle').textContent = data.subtitle;
-    document.getElementById('strategy-tag').textContent = data.tag;
     document.getElementById('strategy-headline').innerHTML = data.headline.replace(/\n/g, '<br>');
 
     const itemsHtml = data.items.map((item, i) => `
@@ -950,6 +950,7 @@
         <span class="strategy-num">0${i + 1}</span>
         <div class="strategy-item-title">${item.title}</div>
         <div class="strategy-item-desc">${item.desc}</div>
+        ${item.img ? `<img class="strategy-item-img" src="${item.img}" alt="" loading="lazy">` : ''}
       </div>
     `).join('');
     document.getElementById('strategy-items').innerHTML = itemsHtml;
