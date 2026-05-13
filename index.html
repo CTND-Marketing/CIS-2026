@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>무료 쇼핑몰 숏폼 진단 받아보기</title>
+<title>쇼핑몰 숏폼 진단 받아보기</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -364,7 +365,27 @@
     background: linear-gradient(180deg, rgba(255, 251, 247, 0) 0%, var(--bg) 30%);
     z-index: 50;
   }
+  .btn-row {
+    display: flex;
+    gap: 10px;
+  }
+  .btn-prev {
+    flex: 0 0 30%;
+    background: var(--white);
+    color: var(--ink-soft);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 16px;
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: -0.02em;
+    font-family: inherit;
+  }
+  .btn-prev:active { transform: scale(0.98); background: var(--orange-pale); }
   .btn-next {
+    flex: 1;
     width: 100%;
     background: var(--orange);
     color: var(--white);
@@ -754,7 +775,10 @@
     </div>
 
     <div class="footer-cta">
-      <button class="btn-next" id="btn-next" onclick="nextStep()" disabled>다음</button>
+      <div class="btn-row">
+        <button class="btn-prev" id="btn-prev" onclick="prevStep()" style="display: none;">이전</button>
+        <button class="btn-next" id="btn-next" onclick="nextStep()" disabled>다음</button>
+      </div>
     </div>
   </section>
 
@@ -916,16 +940,32 @@
       state.step++;
       document.querySelector(`.question[data-step="${state.step}"]`).classList.remove('hidden');
       updateProgress();
+      updateNavButtons();
       validateCurrentStep();
-      if (state.step === 7) {
-        document.getElementById('btn-next').textContent = '결과 보기 🎉';
-      } else {
-        document.getElementById('btn-next').textContent = '다음';
-      }
       window.scrollTo(0, 0);
     } else {
       showResult();
     }
+  }
+
+  // 이전 단계
+  function prevStep() {
+    if (state.step <= 1) return;
+    document.querySelector(`.question[data-step="${state.step}"]`).classList.add('hidden');
+    state.step--;
+    document.querySelector(`.question[data-step="${state.step}"]`).classList.remove('hidden');
+    updateProgress();
+    updateNavButtons();
+    validateCurrentStep();
+    window.scrollTo(0, 0);
+  }
+
+  // 이전/다음 버튼 표시 상태 업데이트
+  function updateNavButtons() {
+    // 이전 버튼: Q1에서는 숨김, Q2 이후 표시
+    document.getElementById('btn-prev').style.display = state.step > 1 ? 'block' : 'none';
+    // 다음 버튼 텍스트: 마지막 단계에서는 '결과 보기'
+    document.getElementById('btn-next').textContent = state.step === state.totalSteps ? '결과 보기 🎉' : '다음';
   }
 
   function updateProgress() {
@@ -1006,6 +1046,7 @@
     document.getElementById('intro').style.display = 'flex';
     document.getElementById('btn-next').textContent = '다음';
     document.getElementById('btn-next').disabled = true;
+    document.getElementById('btn-prev').style.display = 'none';
     updateProgress();
     window.scrollTo(0, 0);
   }
